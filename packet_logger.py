@@ -5,6 +5,7 @@ and ports.
 Cleans the logs and arrange them in a json format. - George
 '''
 
+
 import scapy.all as scapy
 import re, json, time, random, os, logging
 from datetime import datetime
@@ -69,19 +70,19 @@ def add_log_to_file(logs):
 
 def this_pkt(packet): #this is the callback function that is called in the sniff function
   
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger()
+    logging.basicConfig(filename='LoggingPacket.json', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    #logger = logging.getLogger()
 
     try:
 
         if packet.haslayer(scapy.TCP): #this checks if the packet has a tcp layer using scapy. 
             ips_ports = get_ips_ports(packet)
             clean_json_logs = json.dumps(f'{ips_ports}')
-            logger.info(clean_json_logs)
+            logging.info(clean_json_logs)
             time.sleep(1)
-            print_logs = add_log_to_file(clean_json_logs)    
-            return str(print_logs)
-         
+
+            #print_logs = add_log_to_file(clean_json_logs)    
+            #return str(print_logs)
     except ValueError:
         return None
     except TypeError:
